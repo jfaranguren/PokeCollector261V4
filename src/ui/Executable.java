@@ -54,6 +54,8 @@ public class Executable {
             System.out.println("2. Mostrar informacion de una carta");
             System.out.println("3. Modificar informacion de una carta");
             System.out.println("4. Borrar una carta");
+            System.out.println("5. Visualizar la coleccion de cartas por tipo");
+            System.out.println("6. Visualizar estadisticas de la coleccion de cartas por tipo y rareza");
             System.out.println("0. Salir del sistema");
             option = reader.nextInt();
 
@@ -71,6 +73,12 @@ public class Executable {
                     break;
                 case 4:
                     deleteCard();
+                    break;
+                case 5:
+                    showCollectionByType();
+                    break;
+                case 6:
+                    showCollectionByTypeAndRarity();
                     break;
 
                 case 0:
@@ -158,23 +166,10 @@ public class Executable {
         System.out.println("Digite la expansion");
         String expansion = reader.nextLine();
 
-        int id;
-        do {
-            System.out.println("Digite el numero de identificacion");
-            id = reader.nextInt();
-
-            inputFlag = control.checkCardId(id);
-
-            if (!inputFlag) {
-                System.out.println("El número de identificacion ya esta en uso, digite otro\n");
-            }
-
-        } while (!inputFlag);
-
         System.out.println("Digite el precio");
         double price = reader.nextDouble();
 
-        boolean result = control.registerCard(name, type, rarity, expansion, id, price);
+        boolean result = control.registerCard(name, type, rarity, expansion, price);
 
         if (result) {
             System.out.println("Carta registrada exitosamente!");
@@ -334,6 +329,18 @@ public class Executable {
             System.out.println("\nOperacion exitosa, la carta fue borrada del sistema!");
         }
 
+    }
+
+    public void showCollectionByType() {
+
+        System.out.println("\nLa colección de cartas segun su tipo esta conformada asi:\n");
+        System.out.println(control.getPokedexByType());
+    }
+
+    public void showCollectionByTypeAndRarity() {
+
+        System.out.println("\nLas estadisticas de la colección de cartas segun su tipo y rareza son:\n");
+        System.out.println(control.getPokedexByTypeAndRarity());
     }
 
 }

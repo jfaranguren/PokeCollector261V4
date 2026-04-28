@@ -14,6 +14,11 @@ public class Controller {
      */
     private ArrayList<Card> pokedex;
 
+     /**
+     * MatrixHandler instance used to generate and manipulate matrix representations and operations
+     */
+    private MatrixHandler matrixHandler;
+
     /**
      * Description: Initializes a new Controller with an empty Pokedex ArrayList.
      * Also loads test data into the Pokedex.
@@ -23,6 +28,7 @@ public class Controller {
      */
     public Controller() {
         pokedex = new ArrayList<Card>();
+        matrixHandler = new MatrixHandler();
         loadTestData();
 
     }
@@ -36,9 +42,9 @@ public class Controller {
      */
     public void loadTestData() {
 
-        registerCard("Pikachu", "ELECTRIC", "NORMAL", "Rocky Ridges", 20, 2.0);
-        registerCard("Blastoise", "WATER", "RARE", "Void Dimension", 43, 14.0);
-        registerCard("Error", "Error", "Error", "Error", 43, -20);
+        registerCard("Pikachu", "ELECTRIC", "NORMAL", "Rocky Ridges", 2.0);
+        registerCard("Raichu", "ELECTRIC", "NORMAL", "Rocky Ridges", 4.0);
+        registerCard("Blastoise", "WATER", "RARE", "Void Dimension", 14.0);
     }
 
     /**
@@ -54,21 +60,24 @@ public class Controller {
      * @param type      the type of the Pokémon (e.g., Fire, Water, Grass)
      * @param rarity    the rarity level of the card
      * @param expansion the expansion set the card belongs to
-     * @param id        the unique identifier of the card
      * @param price     the price of the card
      * @return true if the card is successfully registered, false if the Pokedex is
      *         full
      */
-    public boolean registerCard(String name, String type, String rarity, String expansion, int id, double price) {
+    public boolean registerCard(String name, String type, String rarity, String expansion, double price) {
 
-        if (checkCardId(id) && checkType(type) && checkRarity(rarity)) {
+        if (checkType(type) && checkRarity(rarity)) {
 
-            Type myType = Type.valueOf(type);
+            String id = matrixHandler.generateID(Rarity.valueOf(rarity));
 
-            Rarity myRarity = Rarity.valueOf(rarity);
+            if (checkCardId(id)) {
+                Type myType = Type.valueOf(type);
 
-            Card myCard = new Card(name, myType, myRarity, expansion, id, price);
-            return pokedex.add(myCard);
+                Rarity myRarity = Rarity.valueOf(rarity);
+
+                Card myCard = new Card(name, myType, myRarity, expansion, id, price);
+                return pokedex.add(myCard);
+            }
 
         }
 
@@ -128,11 +137,11 @@ public class Controller {
      * @param id the ID to check for uniqueness
      * @return true if the ID is unique and not in use, false if it already exists
      */
-    public boolean checkCardId(int id) {
+    public boolean checkCardId(String id) {
 
         for (Card card : pokedex) {
 
-            if (card != null && card.getId() == id) {
+            if (card != null && card.getId().equals(id)) {
                 return false;
             }
 
@@ -266,6 +275,36 @@ public class Controller {
         }
 
         return false;
+
+    }
+
+     /**
+     * Description: Gets a matrix representation of the Pokedex grouped by Pokémon type.
+     * The matrix is created using the MatrixHandler instance and includes all cards in the Pokedex.
+     * 
+     * Precondition: The pokedex ArrayList must be initialized and may contain Card objects.
+     * Precondition: The matrixHandler MatrixHandler must be initialized.
+     * 
+     * @return A String containing the matrix representation of the Pokedex grouped by type.
+     */
+    public String getPokedexByType() {
+
+        return matrixHandler.generateMatrixByType(pokedex);
+
+    }
+
+    /**
+     * Description: Gets a matrix representation of the Pokedex grouped by Pokémon type and rarity.
+     * The matrix is created using the MatrixHandler instance and includes all cards in the Pokedex.
+     * 
+     * Precondition: The pokedex ArrayList must be initialized and may contain Card objects.
+     * Precondition: The matrixHandler MatrixHandler must be initialized.
+     * 
+     * @return A String containing the matrix representation of the Pokedex grouped by type and rarity.
+     */
+    public String getPokedexByTypeAndRarity() {
+
+        return matrixHandler.generateMatrixByTypeAndRarity(pokedex);
 
     }
 

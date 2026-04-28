@@ -12,7 +12,7 @@ public class Card {
     private Type type;
     private Rarity rarity;
     private String expansion;
-    private int id;
+    private String id;
     private double price;
 
     // Methods
@@ -27,7 +27,7 @@ public class Card {
      * @param id        The unique identification number of the card
      * @param price     The price of the card
      */
-    public Card(String name, Type type, Rarity rarity, String expansion, int id, double price) {
+    public Card(String name, Type type, Rarity rarity, String expansion, String id, double price) {
 
         this.name = name;
         this.type = type;
@@ -131,9 +131,9 @@ public class Card {
     /**
      * Description: Returns the unique identification number of the card.
      * 
-     * @return an integer containing the card's ID
+     * @return a String containing the card's ID
      */
-    public int getId() {
+    public String getId() {
         return id;
     }
 
